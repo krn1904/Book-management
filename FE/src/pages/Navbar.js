@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(prevState => !prevState);
+  };
+
   const logoutHandler = () => {
     localStorage.removeItem("token");
     if (localStorage.getItem("admin")) {
@@ -20,7 +27,10 @@ const Navbar = () => {
           </span>
         </div>
         <div className="block lg:hidden">
-          <button className="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+          <button
+            className="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white"
+            onClick={toggleMenu}
+          >
             <svg
               className="fill-current h-3 w-3"
               viewBox="0 0 20 20"
@@ -31,7 +41,7 @@ const Navbar = () => {
             </svg>
           </button>
         </div>
-        <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+        {!isMenuOpen && <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
           <div className="text-lg lg:flex-grow">
             <>
               {!token ? (
@@ -110,7 +120,7 @@ const Navbar = () => {
               ""
             )}
           </div>
-        </div>
+        </div>}
       </nav>
     </div>
   );

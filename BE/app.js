@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const config = require('./config.json')
 const router = express.Router();
 const cors = require("cors");
 const app = express();
@@ -7,7 +8,7 @@ app.use(express.json());
 app.use(cors());
 
 //connect to mongoose
-mongoose.connect("mongodb://localhost/bookapp", {
+mongoose.connect(config.DbURL, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
 });

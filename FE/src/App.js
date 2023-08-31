@@ -17,11 +17,13 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Navbar from "./pages/Navbar";
 import Register from "./pages/Register";
+import { UserProvider } from "./pages/Context/UserContext";
 
 export default function App() {
   return (
     <div>
       <BrowserRouter>
+      <UserProvider> 
         <Navbar />
         <ToastContainer position="top-center" />
         <Routes>
@@ -36,6 +38,7 @@ export default function App() {
           <Route path="cartpage/:id" element={<Editcart />} />
           <Route path="/about" element={<AboutProject />} />
         </Routes>
+        </UserProvider>
       </BrowserRouter>
     </div>
   );

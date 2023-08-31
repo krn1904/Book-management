@@ -74,21 +74,17 @@ router.post(
         email,
       });
       if (!user) {
-        return res
-          .status(400)
-          .json({
-            status: "error",
-            message: "please try to login with correct credentials",
-          });
+        return res.status(400).json({
+          status: "error",
+          message: "please try to login with correct credentials",
+        });
       }
       const passwordcompare = await bcrypt.compare(password, user.password);
       if (!passwordcompare) {
-        return res
-          .status(400)
-          .json({
-            status: "error",
-            message: "please try to login with correct credentials",
-          });
+        return res.status(400).json({
+          status: "error",
+          message: "please try to login with correct credentials",
+        });
       }
       const data = {
         user: {
@@ -124,5 +120,6 @@ router.get("/allusers", async (req, res) => {
     res.json({ status: "error" });
   }
 });
+
 
 module.exports = router;

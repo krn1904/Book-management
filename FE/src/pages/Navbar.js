@@ -1,23 +1,30 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useUserContext } from "./Context/UserContext";
 
 const Navbar = () => {
   
-  const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { removeUserDetails, user } = useUserContext();
 
   const toggleMenu = () => {
     setIsMenuOpen(prevState => !prevState);
   };
 
   const logoutHandler = () => {
+    //remove JWT
     localStorage.removeItem("token");
+    //update context value when user logout
+    removeUserDetails();
+
     if (localStorage.getItem("admin")) {
       localStorage.removeItem("admin");
     }
     navigate("/login");
   };
+  
   return (
     <div>
       <nav className="flex  items-center justify-between mb-3 flex-wrap bg-slate-900 p-6">

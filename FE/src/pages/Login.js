@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useUserContext } from "./Context/UserContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { setUserDetails } = useUserContext();
+
   const loginUser = async (e) => {
     e.preventDefault();
     const response = await fetch("http://localhost:2000/api/login", {
@@ -18,9 +21,17 @@ const Login = () => {
       }),
     });
 
+    //update users value in the context provider
+    setUserDetails(email);
+
     const data = await response.json();
+
     console.log(data);
+
+    //Set JWT Token
     localStorage.setItem("token", data.authtoken);
+
+    //Check for admin
     if (email === "admin@admin.com") {
       localStorage.setItem("admin", "admin");
     }

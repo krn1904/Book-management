@@ -3,19 +3,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "./Context/UserContext";
 
 const Navbar = () => {
-  
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { removeUserDetails, user } = useUserContext();
 
   const toggleMenu = () => {
-    setIsMenuOpen(prevState => !prevState);
+    setIsMenuOpen((prevState) => !prevState);
   };
 
   const logoutHandler = () => {
     //remove JWT
     localStorage.removeItem("token");
+
     //update context value when user logout
     removeUserDetails();
 
@@ -24,7 +24,7 @@ const Navbar = () => {
     }
     navigate("/login");
   };
-  
+
   return (
     <div>
       <nav className="flex  items-center justify-between mb-3 flex-wrap bg-slate-900 p-6">
@@ -48,86 +48,94 @@ const Navbar = () => {
             </svg>
           </button>
         </div>
-        {!isMenuOpen && <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-          <div className="text-lg lg:flex-grow">
-            <>
-              {!token ? (
+        {!isMenuOpen && (
+          <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+            <div className="text-lg lg:flex-grow">
+              <>
+                {!token ? (
+                  <>
+                    <Link
+                      to="/login"
+                      className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      to="/register"
+                      className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+                    >
+                      Register
+                    </Link>
+                  </>
+                ) : (
+                  <button
+                    className="block mt-4 lg:inline-block mr-3 lg:mt-0 text-teal-200 hover:text-white"
+                    onClick={logoutHandler}
+                  >
+                    Logout
+                  </button>
+                )}
+              </>
+              <Link
+                to="/home"
+                className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"
+              >
+                Home
+              </Link>
+
+              <Link
+                to="/about"
+                className="block ml-3 mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+              >
+                About
+              </Link>
+              {localStorage.getItem("admin") &&
+              localStorage.getItem("admin") === "admin" ? (
                 <>
                   <Link
-                    to="/login"
-                    className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+                    to="/editproduct"
+                    className="block mt-4 ml-3 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
                   >
-                    Login
+                    EditBook
                   </Link>
                   <Link
-                    to="/register"
+                    to="/allusers"
                     className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
                   >
-                    Register
+                    Allusers
+                  </Link>
+                  <Link
+                    to="/addbook"
+                    className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"
+                  >
+                    AddNewBook
                   </Link>
                 </>
               ) : (
-                <button
-                  className="block mt-4 lg:inline-block mr-3 lg:mt-0 text-teal-200 hover:text-white"
-                  onClick={logoutHandler}
-                >
-                  Logout
-                </button>
+                <></>
               )}
-            </>
-            <Link
-              to="/home"
-              className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"
-            >
-              Home
-            </Link>
+            </div>
 
-            <Link
-              to="/about"
-              className="block ml-3 mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+            <div>
+              {!localStorage.getItem("admin") ? (
+                <Link
+                  to="/cart"
+                  className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+                >
+                  Cart
+                </Link>
+              ) : (
+                ""
+              )}
+            </div>
+            <div
+              className="text-white bg-red-500 rounded-full py-2 px-4 ml-2"
+              style={{ width: "fit-content" }}
             >
-              About
-            </Link>
-            {localStorage.getItem("admin") &&
-            localStorage.getItem("admin") === "admin" ? (
-              <>
-                <Link
-                  to="/editproduct"
-                  className="block mt-4 ml-3 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-                >
-                  EditBook
-                </Link>
-                <Link
-                  to="/allusers"
-                  className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-                >
-                  Allusers
-                </Link>
-                <Link
-                  to="/addbook"
-                  className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"
-                >
-                  AddNewBook
-                </Link>
-              </>
-            ) : (
-              <></>
-            )}
+              {user && user.slice(0, 1).toUpperCase()}
+            </div>
           </div>
-
-          <div>
-            {!localStorage.getItem("admin") ? (
-              <Link
-                to="/cart"
-                className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
-              >
-                Cart
-              </Link>
-            ) : (
-              ""
-            )}
-          </div>
-        </div>}
+        )}
       </nav>
     </div>
   );
